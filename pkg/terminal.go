@@ -2,8 +2,9 @@ package pkg
 
 import (
 	"fmt"
-	"ps_info/internal"
 	"time"
+
+	"ps_info/internal"
 )
 
 func Output() {
@@ -21,6 +22,7 @@ func Output() {
 		fmt.Println()
 
 		cpuPercentList := internal.CPUUsage()
+		fmt.Println(cpuPercentList)
 		fmt.Printf("[CPU]  cpu1: %.1f  cpu2: %.1f  cpu3: %.1f  cpu4: %.1f\n", cpuPercentList[0], cpuPercentList[1], cpuPercentList[2], cpuPercentList[3])
 		fmt.Printf("[CPU]  cpu5: %.1f  cpu6: %.1f  cpu7: %.1f  cpu8: %.1f\n", cpuPercentList[4], cpuPercentList[5], cpuPercentList[6], cpuPercentList[7])
 
@@ -38,7 +40,7 @@ func Output() {
 
 // OutputOriginal use the uilive library to update related information in the same place
 // but cpu use percent 24%-30%, too higher
-//func OutputOriginal() {
+// func OutputOriginal() {
 //	fmt.Println("=====    Basic Information    =====")
 //
 //	platformInfoRes := internal.PlatformInfo()
