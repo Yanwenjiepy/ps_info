@@ -1,0 +1,30 @@
+
+# logger config
+["log"]
+
+# log file path, must input
+path="/home/pylang/logs/ps_info/info.log"
+
+# log level, default is info
+level="info"
+
+# log file maximum size in megabytes of the log file before it gets rotated
+# Suggest size > 100
+size=500
+
+# log file maximum number of days to retain old log files,
+# default is 0 and not to remove old log files.
+age=30
+
+# log file maximum number of old log files to retain,
+# default is 0 and retain all old log files.
+backups=0
+
+# local determines if the time used for formatting the timestamps in
+# backup files is the computer's local time,
+# The default is to use UTC time.
+local=false
+
+# compress determines if the rotated log files should be compressed using gzip.
+# The default is not to perform compression.
+compress=true

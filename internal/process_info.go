@@ -4,7 +4,7 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
-	"ps_info/logger"
+	"ps_info/pkg/logger"
 )
 
 type platformInfo struct {
