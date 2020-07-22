@@ -29,7 +29,9 @@ const (
 
 var Log *zap.Logger
 
-func InitLog(logConfig config.LoggerConfig) error {
+// InitLog initialize project logger with configuration
+// According to actual needs, you can add new key-value to json encoder
+func InitLog(logConfig config.LoggerConfig, serverConfig config.ServerInfoConfig) error {
 
 	level, err := getLogLevel(logConfig.LogLevel)
 	if err != nil {
@@ -47,6 +49,9 @@ func InitLog(logConfig config.LoggerConfig) error {
 	fileEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
 	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 
+	addFields(fileEncoder, serverConfig)
+	addFields(consoleEncoder, serverConfig)
+
 	fileCore := zapcore.NewCore(fileEncoder, fileWriter, level)
 	consoleCore := zapcore.NewCore(consoleEncoder, consoleErrWriter, level)
 	core := zapcore.NewTee(fileCore, consoleCore)
@@ -55,6 +60,7 @@ func InitLog(logConfig config.LoggerConfig) error {
 	return nil
 }
 
+// newFileLogger create an io.WriteCloser, write log msg to log file
 func newFileLogger(logConfig config.LoggerConfig) (*lumberjack.Logger, error) {
 
 	logFilepath, err := getLogFilepath(logConfig.LogPath)
@@ -105,6 +111,7 @@ func newFileLogger(logConfig config.LoggerConfig) (*lumberjack.Logger, error) {
 	return &fileLogger, nil
 }
 
+// getLogFilepath check if the configured log file path is available
 func getLogFilepath(filepath string) (string, error) {
 
 	ErrUnavailableLogFilepath := errors.New(UnavailableLogFile)
@@ -121,6 +128,7 @@ func getLogFilepath(filepath string) (string, error) {
 	return filepath, nil
 }
 
+// getLogLevel check if the configured log level is available
 func getLogLevel(level string) (zapcore.Level, error) {
 
 	logLevel := zap.InfoLevel
@@ -149,6 +157,7 @@ func getLogLevel(level string) (zapcore.Level, error) {
 	return logLevel, nil
 }
 
+// getLogFileMaxSize check if the configured log file max size is available
 func getLogFileMaxSize(size int) (int, error) {
 
 	if size > 0 {
@@ -159,6 +168,7 @@ func getLogFileMaxSize(size int) (int, error) {
 	return 0, ErrUnavailableLogFileMaxSize
 }
 
+// getLogFileMaxAge check if the configured log file max age is available
 func getLogFileMaxAge(age int) (int, error) {
 
 	if age < 0 {
@@ -169,6 +179,7 @@ func getLogFileMaxAge(age int) (int, error) {
 	return age, nil
 }
 
+// getLogFileMaxBackups check if the configured log file max backups is available
 func getLogFileMaxBackups(backups int) (int, error) {
 
 	if backups < 0 {
@@ -179,6 +190,7 @@ func getLogFileMaxBackups(backups int) (int, error) {
 	return backups, nil
 }
 
+// isUseLocalTime check if the configured localTimeFlag is available
 func isUseLocalTime(isLocalTime bool) (bool, error) {
 	switch isLocalTime {
 
@@ -194,6 +206,7 @@ func isUseLocalTime(isLocalTime bool) (bool, error) {
 	}
 }
 
+// isCompressLogFile check if configured compressFlag is available
 func isCompressLogFile(isCompress bool) (bool, error) {
 	switch isCompress {
 
@@ -207,4 +220,16 @@ func isCompressLogFile(isCompress bool) (bool, error) {
 		ErrUnavailableCompressFlag := errors.New(UnavailableCompressFlag)
 		return false, ErrUnavailableCompressFlag
 	}
+}
+
+// addFields add certain extended fields to logger recorder.
+// you can add or delete fields according to actual needs
+func addFields(enc zapcore.Encoder, serverConfig config.ServerInfoConfig) {
+	enc.AddString("host", serverConfig.Host)
+	enc.AddString("port", serverConfig.Port)
+	enc.AddString("appid", serverConfig.ApplicationID)
+	enc.AddString("appname", serverConfig.ApplicationName)
+	enc.AddString("appversion", serverConfig.ApplicationVersion)
+	enc.AddString("iid", serverConfig.InstanceID)
+	enc.AddString("iname", serverConfig.InstanceName)
 }

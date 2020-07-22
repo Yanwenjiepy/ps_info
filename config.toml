@@ -1,5 +1,5 @@
 
-# logger config
+# logger configs
 ["log"]
 
 # log file path, must input
@@ -28,3 +28,27 @@ local=false
 # compress determines if the rotated log files should be compressed using gzip.
 # The default is not to perform compression.
 compress=true
+
+# server configs
+[server]
+
+# server ip
+host="127.0.0.1"
+
+# server listen port
+port=""
+
+# application id
+application_id="1234567"
+
+# application name
+application_name="ps_info"
+
+# instance id
+instance_id="0001"
+
+# instance name
+instance_name="ps_1"
+
+# application version
+application_version="v1.0"

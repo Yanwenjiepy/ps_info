@@ -7,61 +7,61 @@ import (
 	"ps_info/pkg/logger"
 )
 
-type platformInfo struct {
+type PlatformContent struct {
 	Platform string
 	Family   string
 	Version  string
 }
 
-type cpuInfo struct {
+type CPUContent struct {
 	PhysicalNum int
 	LogicalNum  int
 }
 
-type memoryInfo struct {
+type MemoryContent struct {
 	TotalSize float64
 	UsedSize  float64
 }
 
 // PlatformInfo return the name、family、version of the platform currently in use
-func PlatformInfo() *platformInfo {
+func PlatformInfo() PlatformContent {
 
-	platformInfoContent := platformInfo{}
+	platformInfoContent := PlatformContent{}
 
 	platformName, platformFamily, platformVersion, err := host.PlatformInformation()
 	if err != nil {
 		logger.Log.Error("Failed to get platform info!")
-		return &platformInfoContent
+		return platformInfoContent
 	}
 
 	platformInfoContent.Platform = platformName
 	platformInfoContent.Family = platformFamily
 	platformInfoContent.Version = platformVersion
 
-	return &platformInfoContent
+	return platformInfoContent
 }
 
 // CPUInfo return the cpu physical of logical core of the computer currently in use
-func CPUInfo() *cpuInfo {
+func CPUInfo() CPUContent {
 
-	cpuInfoContent := cpuInfo{}
+	cpuInfoContent := CPUContent{}
 
 	cpuPhysicalNum, err := cpu.Counts(false)
 	if err != nil {
 		logger.Log.Error("Failed to get cpu physical number!")
-		return &cpuInfoContent
+		return cpuInfoContent
 	}
 
 	cpuLogicalNum, err := cpu.Counts(true)
 	if err != nil {
 		logger.Log.Error("Failed to get cpu logical number!")
-		return &cpuInfoContent
+		return cpuInfoContent
 	}
 
 	cpuInfoContent.PhysicalNum = cpuPhysicalNum
 	cpuInfoContent.LogicalNum = cpuLogicalNum
 
-	return &cpuInfoContent
+	return cpuInfoContent
 }
 
 // CPUUseInfo return the CPU usage of the computer currently in use
@@ -75,14 +75,14 @@ func CPUUsage() []float64 {
 }
 
 // MemoryInfo return the memory usage of the computer currently in use
-func MemoryInfo() *memoryInfo {
+func MemoryInfo() MemoryContent {
 
-	memoryInfoContent := memoryInfo{}
+	memoryInfoContent := MemoryContent{}
 
 	virtualMemory, err := mem.VirtualMemory()
 	if err != nil {
 		logger.Log.Error("Failed to get virtual memory!")
-		return &memoryInfoContent
+		return memoryInfoContent
 	}
 
 	totalMemory := float64(virtualMemory.Total) / (1024 * 1024 * 1024)
@@ -91,5 +91,5 @@ func MemoryInfo() *memoryInfo {
 	memoryInfoContent.TotalSize = totalMemory
 	memoryInfoContent.UsedSize = usedMemory
 
-	return &memoryInfoContent
+	return memoryInfoContent
 }
