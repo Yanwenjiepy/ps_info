@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"ps_info/pkg"
 	"ps_info/pkg/config"
 	"ps_info/pkg/logger"
 )
@@ -58,4 +59,6 @@ func main() {
 	ldFields := ld.AddFields()
 
 	logger.Log.Info("", ldFields...)
+
+	pkg.Output()
 }

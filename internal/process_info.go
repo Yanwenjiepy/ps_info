@@ -30,7 +30,7 @@ func PlatformInfo() PlatformContent {
 
 	platformName, platformFamily, platformVersion, err := host.PlatformInformation()
 	if err != nil {
-		logger.Log.Error("Failed to get platform info!")
+		logger.Log.Error("[PlatformInfo] Failed to get platform info, err: " + err.Error())
 		return platformInfoContent
 	}
 
@@ -48,13 +48,13 @@ func CPUInfo() CPUContent {
 
 	cpuPhysicalNum, err := cpu.Counts(false)
 	if err != nil {
-		logger.Log.Error("Failed to get cpu physical number!")
+		logger.Log.Error("[CPUInfo] Failed to get cpu physical number, err: " + err.Error())
 		return cpuInfoContent
 	}
 
 	cpuLogicalNum, err := cpu.Counts(true)
 	if err != nil {
-		logger.Log.Error("Failed to get cpu logical number!")
+		logger.Log.Error("[CPUInfo] Failed to get cpu logical number, err: " + err.Error())
 		return cpuInfoContent
 	}
 
@@ -68,7 +68,7 @@ func CPUInfo() CPUContent {
 func CPUUsage() []float64 {
 	cpuUsePercentList, err := cpu.Percent(0, true)
 	if err != nil {
-		logger.Log.Error("Failed to get cpu percent!")
+		logger.Log.Error("[CPUUsage] Failed to get cpu percent, err: " + err.Error())
 		return nil
 	}
 	return cpuUsePercentList
@@ -81,7 +81,7 @@ func MemoryInfo() MemoryContent {
 
 	virtualMemory, err := mem.VirtualMemory()
 	if err != nil {
-		logger.Log.Error("Failed to get virtual memory!")
+		logger.Log.Error("[MemoryInfo] Failed to get virtual memory, err: " + err.Error())
 		return memoryInfoContent
 	}
 
