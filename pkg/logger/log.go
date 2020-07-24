@@ -1,3 +1,10 @@
+// logger is project's log recorder
+
+// if you want to add certain value extended fields to log recorder,
+// edit addFields func and add certain extended fields's k-v
+
+// if you want to add uncertain value extended fields to log recorder,
+// edit the LogDetail provided one or create a new one yourself
 package logger
 
 import (
@@ -222,7 +229,7 @@ func isCompressLogFile(isCompress bool) (bool, error) {
 	}
 }
 
-// addFields add certain extended fields to logger recorder.
+// addFields add certain value extended fields to logger recorder.
 // you can add or delete fields according to actual needs
 func addFields(enc zapcore.Encoder, serverConfig config.ServerInfoConfig) {
 	enc.AddString("host", serverConfig.Host)

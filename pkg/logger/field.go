@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// LogDetail expanded more fields to meet actual needs
+// LogDetail extended more fields to meet actual needs
 type LogDetail struct {
 	// current host server ip
 	// Host string
